@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "week": 14,
+    "year": 2025
+  },
+  "teams": [
+    {
+      "team_name": "Kitty Goes Meow",
+      "owner_id": "123",
+      "players": [
+        {
+          "name": "Caleb Williams",
+          "position": "QB1",
+          "team": "Chi",
+          "points": 10.4,
+          "projection": 13.74
+        },
+        {
+          "name": "Justin Jefferson",
+          "position": "WR1",
+          "team": "Min",
+          "points": 10.9,
+          "projection": 14.34
+        },
+        {
+          "name": "Jaylen Waddle",
+          "position": "WR2",
+          "team": "Mia",
+          "points": 10.9,
+          "projection": 14.34
+        }
+      ]
+    },
+    {
+      "team_name": "Big Nix Energy",
+      "owner_id": "456",
+      "players": [
+        {
+          "name": "Jalen Hurts",
+          "position": "QB1",
+          "team": "Phi",
+          "points": 27.04,
+          "projection": 30.44
+        },
+        {
+          "name": "Ladd McConkey",
+          "position": "WR1",
+          "team": "LAC",
+          "points": 11.2,
+          "projection": 13.44
+        },
+        {
+          "name": "Zay Flowers",
+          "position": "WR2",
+          "team": "Bal",
+          "points": 11.2,
+          "projection": 13.44
+        }
+      ]
+    }
+  ]
+}

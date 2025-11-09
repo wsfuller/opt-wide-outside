@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "files.autoSave": "off",
+  "cSpell.words": ["supabase"]
+}
