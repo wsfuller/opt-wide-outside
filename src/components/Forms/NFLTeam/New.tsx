@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
-import { supabase } from '@/lib/utils/supabase-client';
+import { createClient } from '@/lib/utils/supabase-client';
 
 import { Button, Group, Select, TextInput } from '@mantine/core';
 
@@ -37,7 +37,7 @@ export default function NFLTeamNew() {
     try {
       const { teamName, city, conference, division, abbreviation } = values;
 
-      const { data, error } = await supabase
+      const { data, error } = await createClient()
         .from('nfl_teams')
         .insert({
           team_name: teamName,
