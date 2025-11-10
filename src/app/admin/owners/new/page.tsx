@@ -5,7 +5,7 @@ import { Button, FileInput, Group, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 
-import { supabase } from '@/lib/utils/supabase-client';
+import { createClient } from '@/lib/utils/supabase-client';
 
 export default function OwnersNew() {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -50,6 +50,7 @@ export default function OwnersNew() {
       const filePath = `owner-team-logos/${fileName}`;
 
       // Upload to Supabase Storage
+      const supabase = createClient();
       const { data, error } = await supabase.storage
         .from('owner-team-logos') // your bucket name
         .upload(filePath, file, {
@@ -85,7 +86,7 @@ export default function OwnersNew() {
     try {
       const { firstName, lastName, teamName } = values;
 
-      const { data, error } = await supabase
+      const { data, error } = await createClient()
         .from('owners')
         .insert({
           first_name: firstName,
