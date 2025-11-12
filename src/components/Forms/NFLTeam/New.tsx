@@ -14,7 +14,7 @@ export default function NFLTeamNew() {
     mode: 'controlled',
     initialValues: {
       teamName: '',
-      city: '',
+      location: '',
       conference: '',
       division: '',
       // teamLogo: '',
@@ -23,7 +23,7 @@ export default function NFLTeamNew() {
 
     validate: {
       teamName: (value) => (value.length > 0 ? null : 'Team name is required'),
-      city: (value) => (value.length > 0 ? null : 'City is required'),
+      location: (value) => (value.length > 0 ? null : 'Location is required'),
       conference: (value) =>
         value.length > 0 ? null : 'Conference is required',
       division: (value) => (value.length > 0 ? null : 'Division is required'),
@@ -35,13 +35,13 @@ export default function NFLTeamNew() {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      const { teamName, city, conference, division, abbreviation } = values;
+      const { teamName, location, conference, division, abbreviation } = values;
 
       const { data, error } = await createClient()
         .from('nfl_teams')
         .insert({
           team_name: teamName,
-          city,
+          location,
           conference,
           division: `${conference} ${division}`,
           abbreviation,
@@ -85,10 +85,10 @@ export default function NFLTeamNew() {
         />
         <TextInput
           withAsterisk
-          label="City"
+          label="Location"
           placeholder="Chicago"
-          key={form.key('city')}
-          {...form.getInputProps('city')}
+          key={form.key('location')}
+          {...form.getInputProps('location')}
         />
         <TextInput
           withAsterisk

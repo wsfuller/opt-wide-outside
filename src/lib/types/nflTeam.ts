@@ -1,7 +1,7 @@
 type NFLTeam = {
   id: string;
   team_name: string;
-  city: string;
+  location: string;
   conference: string;
   division: string;
   abbreviation: string;

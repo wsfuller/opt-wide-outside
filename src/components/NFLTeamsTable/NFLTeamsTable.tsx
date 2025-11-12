@@ -12,7 +12,7 @@ export default function NFLTeamsTable({ teams }: NFLTeamsTableProps) {
       <Table.Thead>
         <Table.Tr>
           <Table.Th>Team Name</Table.Th>
-          <Table.Th>City</Table.Th>
+          <Table.Th>Location</Table.Th>
           <Table.Th>Conference</Table.Th>
           <Table.Th>Division</Table.Th>
           <Table.Th>Abbreviation</Table.Th>
@@ -22,7 +22,7 @@ export default function NFLTeamsTable({ teams }: NFLTeamsTableProps) {
         {teams.map((team) => (
           <Table.Tr key={team.id}>
             <Table.Td>{team.team_name}</Table.Td>
-            <Table.Td>{team.city}</Table.Td>
+            <Table.Td>{team.location}</Table.Td>
             <Table.Td>{team.conference}</Table.Td>
             <Table.Td>{team.division}</Table.Td>
             <Table.Td>{team.abbreviation}</Table.Td>
