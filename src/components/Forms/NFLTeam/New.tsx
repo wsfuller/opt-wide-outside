@@ -51,7 +51,6 @@ export default function NFLTeamNew() {
       if (error) {
         throw error;
       }
-      console.log(data);
 
       notifications.show({
         title: 'Success',
