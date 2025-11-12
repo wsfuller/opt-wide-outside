@@ -34,3 +34,28 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+### Update user role
+
+1. Go to your Supbase Dashboard
+1. Click SQL Editor
+1. Click New query
+1. Run the following SQL and click Run
+
+```
+UPDATE auth.users
+SET raw_user_meta_data = jsonb_set(
+  COALESCE(raw_user_meta_data, '{}'::jsonb),
+  '{role}',
+  '"admin"'
+)
+WHERE email = 'example@gmail.com';
+```
+
+Verify task completed successfully
+
+```
+SELECT email, raw_user_meta_data
+FROM auth.users
+WHERE email = 'example@gmail.com';
+```
