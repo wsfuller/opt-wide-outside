@@ -1,95 +1,96 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import { HiOutlineRocketLaunch } from 'react-icons/hi2';
+import {
+  AppShell,
+  Container,
+  Grid,
+  Text,
+  Timeline,
+  Title,
+} from '@mantine/core';
+
+import AppBar from '@/components/AppBar';
+import HeroImage from '@/components/HeroImage';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <AppShell>
+      <AppShell.Header>
+        <AppBar />
+      </AppShell.Header>
+      <AppShell.Main>
+        <>
+          <HeroImage />
+          <Container>
+            <Grid>
+              <Grid.Col span={12}>
+                <Title>Opt Wide Outside</Title>
+              </Grid.Col>
+              <Grid.Col span="auto">
+                <Text mb="sm">
+                  Excerpt here about the history of the league. Bacon ipsum
+                  dolor amet do nisi jowl ut tongue buffalo. Incididunt id esse
+                  proident veniam landjaeger tri-tip pork labore. Pariatur
+                  corned beef sed venison minim ham laborum ut. Sint consectetur
+                  reprehenderit tail fatback, elit prosciutto tempor sausage.
+                  Pancetta meatloaf sausage, laborum shankle short loin in
+                  deserunt biltong. Fatback bresaola et laborum prosciutto.
+                </Text>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+                <Text>
+                  Excerpt here about the history of the league. Bacon ipsum
+                  dolor amet do nisi jowl ut tongue buffalo. Incididunt id esse
+                  proident veniam landjaeger tri-tip pork labore. Pariatur
+                  corned beef sed venison minim ham laborum ut. Sint consectetur
+                  reprehenderit tail fatback, elit prosciutto tempor sausage.
+                  Pancetta meatloaf sausage, laborum shankle short loin in
+                  deserunt biltong. Fatback bresaola et laborum prosciutto.
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Timeline active={1} bulletSize={24} lineWidth={2}>
+                  <Timeline.Item
+                    bullet={<HiOutlineRocketLaunch />}
+                    title="League Started"
+                  >
+                    <Text c="dimmed" size="sm">
+                      10 person league is born
+                    </Text>
+                    <Text size="xs" mt={4}>
+                      2018
+                    </Text>
+                  </Timeline.Item>
+
+                  <Timeline.Item
+                    title="First champion"
+                    bullet={<HiOutlineRocketLaunch />}
+                    lineVariant="dashed"
+                  >
+                    <Text c="dimmed" size="sm">
+                      First place trophy name
+                    </Text>
+                    <Text size="xs" mt={4}>
+                      2018
+                    </Text>
+                  </Timeline.Item>
+
+                  <Timeline.Item
+                    title="Toilet Bowl"
+                    bullet={<HiOutlineRocketLaunch />}
+                  >
+                    <Text c="dimmed" size="sm">
+                      The first ever Toilet Bowl game is played
+                    </Text>
+                    <Text size="xs" mt={4}>
+                      2023
+                    </Text>
+                  </Timeline.Item>
+                </Timeline>
+              </Grid.Col>
+            </Grid>
+          </Container>
+        </>
+      </AppShell.Main>
+    </AppShell>
   );
 }
