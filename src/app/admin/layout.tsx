@@ -20,7 +20,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
       }}
     >
       <AppShell.Header>
-        <AppBar />
+        <AppBar opened={opened} toggle={toggle} />
       </AppShell.Header>
 
       <AppShell.Navbar>
