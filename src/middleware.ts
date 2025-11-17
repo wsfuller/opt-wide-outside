@@ -36,7 +36,7 @@ export async function middleware(req: NextRequest) {
   // Require a logged-in user for both /admin and /app
   if (!session) {
     const redirectTo = req.nextUrl.clone();
-    redirectTo.pathname = '/sign-in';
+    redirectTo.pathname = '/auth/sign-in';
     redirectTo.searchParams.set('redirectTo', pathname);
     return NextResponse.redirect(redirectTo);
   }

@@ -9,7 +9,7 @@ export default function AuthActions() {
       <Button
         variant="default"
         component={Link}
-        href="/sign-up"
+        href="/auth/sign-up"
         leftSection={<HiOutlineUserPlus />}
       >
         Sign Up
@@ -17,7 +17,7 @@ export default function AuthActions() {
       <Button
         variant="outline"
         component={Link}
-        href="/sign-in"
+        href="/auth/sign-in"
         leftSection={<HiArrowRightEndOnRectangle />}
       >
         Sign In
