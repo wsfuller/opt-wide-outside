@@ -53,7 +53,7 @@ export default function UserMenu({ initialName }: UserMenuProps) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/sign-in');
+    router.push('/auth/sign-in');
     router.refresh();
   };
 

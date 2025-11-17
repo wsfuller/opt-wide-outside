@@ -52,6 +52,20 @@ function NestedNavLinks({
         className={cx('app-nav-link', classes.childLink, {
           active: currentPathname.includes(link.pathname),
         })}
+        // style={{
+        //   display: 'flex',
+        //   alignItems: 'center',
+        //   width: '100%',
+        //   padding: 'var(--mantine-spacing-xs)',
+        //   borderRadius: 'var(--mantine-radius-sm)',
+        //   transition: 'background-color 0.2s ease',
+        // }}
+        // onMouseEnter={(e) => {
+        //   e.currentTarget.style.backgroundColor = 'var(--mantine-color-gray-8)';
+        // }}
+        // onMouseLeave={(e) => {
+        //   e.currentTarget.style.backgroundColor = 'transparent';
+        // }}
         data-disabled={isUserDenied}
       >
         <Text mr="xs" size="sm">
@@ -70,7 +84,20 @@ function NestedNavLinks({
     <>
       <UnstyledButton
         onClick={() => setOpened((o) => !o)}
-        className={classes.parentLink}
+        // className={classes.parentLink}
+        style={{
+          width: '100%',
+          padding: 'var(--mantine-spacing-xs)',
+          paddingLeft: 0,
+          borderRadius: 'var(--mantine-radius-sm)',
+          transition: 'background-color 0.2s ease',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = 'var(--mantine-color-gray-8)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = 'transparent';
+        }}
       >
         <Group justify="space-between" gap={0} px="xs">
           <Box style={{ display: 'flex', alignItems: 'center' }}>
