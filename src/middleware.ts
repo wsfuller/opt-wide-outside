@@ -23,8 +23,9 @@ export async function middleware(req: NextRequest) {
   );
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
   const pathname = req.nextUrl.pathname;
   const isAdminRoute = pathname.startsWith('/admin');
@@ -34,7 +35,7 @@ export async function middleware(req: NextRequest) {
   if (!isAdminRoute && !isAppRoute) return res;
 
   // Require a logged-in user for both /admin and /app
-  if (!session) {
+  if (!user || error) {
     const redirectTo = req.nextUrl.clone();
     redirectTo.pathname = '/auth/sign-in';
     redirectTo.searchParams.set('redirectTo', pathname);
@@ -43,7 +44,7 @@ export async function middleware(req: NextRequest) {
 
   // Admin-only guard
   if (isAdminRoute) {
-    const role = session.user.user_metadata?.role;
+    const role = user.user_metadata?.role;
     if (role !== 'admin') {
       const fallback = req.nextUrl.clone();
       fallback.pathname = '/app';

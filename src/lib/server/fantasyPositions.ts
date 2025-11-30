@@ -1,15 +1,14 @@
 import { createClient } from '@/lib/utils/supabase-client';
+import { FantasyPosition } from '@/lib/types';
 
-async function getNFLTeams() {
+export async function getAll(): Promise<FantasyPosition[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from('nfl_teams')
+    .from('fantasy_positions')
     .select('*')
-    .order('team_name', { ascending: true });
+    .order('position', { ascending: true });
 
   if (error) throw error;
 
   return data;
 }
-
-export default getNFLTeams;

@@ -6,11 +6,15 @@ import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 
 import { createClient } from '@/lib/utils/supabase-client';
+import { IMAGE_FILES_ACCEPTED } from '@/lib/constants';
+import { UploadImageToBucket } from '@/lib/server';
 
 export default function OwnersNew() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  const { uploadImage, BUCKETS } = UploadImageToBucket;
 
   const form = useForm({
     mode: 'controlled',
@@ -42,35 +46,34 @@ export default function OwnersNew() {
     }
   };
 
-  const uploadImage = async (file: File): Promise<string | null> => {
-    try {
-      // Generate unique filename
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
-      const filePath = `owner-team-logos/${fileName}`;
+  // const uploadImage = async (file: File): Promise<string | null> => {
+  //   try {
+  //     // Generate unique filename
+  //     const fileExt = file.name.split('.').pop();
+  //     const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+  //     const filePath = `owner-team-logos/${fileName}`;
 
-      // Upload to Supabase Storage
-      const supabase = createClient();
-      const { data, error } = await supabase.storage
-        .from('owner-team-logos') // your bucket name
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        });
+  //     // Upload to Supabase Storage
+  //     const supabase = createClient();
+  //     const { data, error } = await supabase.storage
+  //       .from('owner-team-logos')
+  //       .upload(filePath, file, {
+  //         cacheControl: '3600',
+  //         upsert: false,
+  //       });
 
-      if (error) throw error;
+  //     if (error) throw error;
 
-      // Get public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from('owner-team-logos').getPublicUrl(filePath);
+  //     const {
+  //       data: { publicUrl },
+  //     } = supabase.storage.from('owner-team-logos').getPublicUrl(filePath);
 
-      return publicUrl;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      return null;
-    }
-  };
+  //     return publicUrl;
+  //   } catch (error) {
+  //     console.error('Error uploading image:', error);
+  //     return null;
+  //   }
+  // };
 
   const handleSubmit = async (values: typeof form.values) => {
     setUploading(true);
@@ -78,7 +81,7 @@ export default function OwnersNew() {
 
     // Upload image first if one was selected
     if (imageFile) {
-      imageUrl = await uploadImage(imageFile);
+      imageUrl = await uploadImage(imageFile, BUCKETS.OWNER_TEAM_IMAGES);
       if (!imageUrl) {
         throw new Error('Failed to upload image');
       }
@@ -151,7 +154,7 @@ export default function OwnersNew() {
         label="Input label"
         description="Input description"
         placeholder="Input placeholder"
-        accept="image/png,image/jpeg,image/jpg,image/webp"
+        accept={IMAGE_FILES_ACCEPTED}
         value={imageFile}
         onChange={handleImageChange}
       />
