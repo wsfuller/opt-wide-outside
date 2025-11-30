@@ -131,8 +131,8 @@ export default function PlayerNew({
         accept={IMAGE_FILES_ACCEPTED}
         description="Upload a PNG, JPEG, JPG, or WebP image for the player"
         key={form.key('imageUrl')}
-        value={imageFile}
-        onChange={handleImageChange}
+        // value={imageFile}
+        // onChange={handleImageChange}
         {...form.getInputProps('imageUrl')}
       />
 
