@@ -96,6 +96,10 @@ export const links: NavLinks[] = [
         label: 'NFL Teams',
       },
       {
+        pathname: '/admin/nfl-players',
+        label: 'NFL Players',
+      },
+      {
         pathname: '/admin/blog',
         label: 'Blog',
       },

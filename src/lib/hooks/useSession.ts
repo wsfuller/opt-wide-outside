@@ -14,22 +14,25 @@ export default function useSession() {
   useEffect(() => {
     let mounted = true;
 
-    const getSession = async () => {
+    const getUser = async () => {
       try {
         const {
-          data: { session },
-          error: sessionError,
-        } = await supabase.auth.getSession();
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
         if (!mounted) return;
 
-        if (sessionError) {
-          setError(sessionError as Error);
+        if (userError) {
+          setError(userError as Error);
           setSession(null);
           setUser(null);
         } else {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
           setSession(session);
-          setUser(session?.user ?? null);
+          setUser(user);
           setError(null);
         }
       } catch (err) {
@@ -44,16 +47,28 @@ export default function useSession() {
       }
     };
 
-    getSession();
+    getUser();
 
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (!mounted) return;
-      setSession(session);
-      setUser(session?.user ?? null);
-      setError(null);
+
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        setSession(null);
+        setUser(null);
+        setError(userError as Error);
+      } else {
+        setSession(session);
+        setUser(user);
+        setError(null);
+      }
     });
 
     return () => {
