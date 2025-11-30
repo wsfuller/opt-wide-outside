@@ -9,16 +9,14 @@ export async function uploadImage(
   file: File,
   bucket: BUCKETS,
 ): Promise<string | null> {
-  console.log('Uploading image to bucket:', bucket);
   try {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
-    const filePath = `${bucket}/${fileName}`;
 
     const supabase = await createClient();
     const { error } = await supabase.storage
       .from(bucket)
-      .upload(filePath, file, {
+      .upload(fileName, file, {
         cacheControl: '3600',
         upsert: false,
       });
@@ -27,7 +25,7 @@ export async function uploadImage(
 
     const {
       data: { publicUrl },
-    } = supabase.storage.from(bucket).getPublicUrl(filePath);
+    } = supabase.storage.from(bucket).getPublicUrl(fileName);
 
     return publicUrl;
   } catch (error) {

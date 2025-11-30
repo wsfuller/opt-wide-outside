@@ -1,34 +1,10 @@
-'use client';
-import { useEffect, useState } from 'react';
-
 import AdminPageHeader from '@/components/AdminPageHeader';
 import { OwnersTable } from '@/components/OwnersTable';
-import Loading from '@/components/Loading';
 
-import { getOwners } from '@/lib/server';
-import type { Owner } from '@/lib/types';
+import { Owners as OwnersService } from '@/lib/server';
 
-export default function Owners() {
-  const [owners, setOwners] = useState<Owner[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchOwners = async () => {
-      try {
-        setLoading(true);
-        const data = await getOwners();
-        setOwners(data || []);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.error('Error fetching owners:', error);
-      }
-    };
-
-    fetchOwners();
-  }, []);
-
-  if (loading) return <Loading />;
+export default async function OwnersPage() {
+  const owners = await OwnersService.getAll();
 
   return (
     <>
