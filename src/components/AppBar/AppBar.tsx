@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { Burger, Flex, Title } from '@mantine/core';
+import { Burger, Flex, Skeleton, Title } from '@mantine/core';
 
 import useSession from '@/lib/hooks/useSession';
 import UserMenu from './UserMenu';
@@ -14,7 +14,7 @@ interface AppBarProps {
 }
 
 export default function AppBar({ opened, toggle }: AppBarProps) {
-  const { session } = useSession();
+  const { session, loading } = useSession();
 
   return (
     <Flex h="100%" align="center" justify="space-between" p="md">
@@ -26,7 +26,13 @@ export default function AppBar({ opened, toggle }: AppBarProps) {
         </Flex>
       </Flex>
 
-      {session ? <UserMenu /> : <AuthActions />}
+      {loading ? (
+        <Skeleton height={30} width={100} />
+      ) : session ? (
+        <UserMenu />
+      ) : (
+        <AuthActions />
+      )}
     </Flex>
   );
 }
