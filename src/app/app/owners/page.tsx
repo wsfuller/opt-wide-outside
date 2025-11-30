@@ -6,10 +6,10 @@ import { Text } from '@mantine/core';
 import PageTitle from '@/components/PageTitle';
 import Loading from '@/components/Loading';
 import { OwnersTable } from '@/components/OwnersTable';
-import { getOwners } from '@/lib/server';
+import { Owners } from '@/lib/server';
 import type { Owner } from '@/lib/types';
 
-export default function Owners() {
+export default function OwnersPage() {
   const [owners, setOwners] = useState<Owner[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +17,7 @@ export default function Owners() {
     const fetchOwners = async () => {
       try {
         setLoading(true);
-        const data = await getOwners();
+        const data = await Owners.getAll();
         setOwners(data || []);
         setLoading(false);
       } catch (error) {
