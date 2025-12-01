@@ -37,7 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ### Update user role
 
-1. Go to your Supbase Dashboard
+1. Go to your Supabase Dashboard
 1. Click SQL Editor
 1. Click New query
 1. Run the following SQL and click Run

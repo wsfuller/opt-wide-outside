@@ -1,13 +1,14 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { Button, FileInput, Group, Select, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 
-import { createClient } from '@/lib/utils/supabase-client';
 import { FantasyPosition, NFLTeam } from '@/lib/types';
 import { IMAGE_FILES_ACCEPTED } from '@/lib/constants';
+import { UploadImageToBucket, NFLPlayers } from '@/lib/server';
 
 interface PlayerNewProps {
   nflTeams: NFLTeam[];
@@ -19,6 +20,12 @@ export default function PlayerNew({
   fantasyPositions,
 }: PlayerNewProps) {
   const router = useRouter();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const { uploadImage, BUCKETS } = UploadImageToBucket;
+
   const form = useForm({
     mode: 'controlled',
     initialValues: {
@@ -39,25 +46,49 @@ export default function PlayerNew({
     },
   });
 
+  const handleImageChange = (file: File | null) => {
+    setImageFile(file);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      setImagePreview(URL.createObjectURL(file));
+    } else {
+      setImagePreview(null);
+    }
+  };
+
   const handleSubmit = async (values: typeof form.values) => {
-    try {
-      const { firstName, lastName, nflTeamId, fantasyPositionId, imageUrl } =
-        values;
+    setUploading(true);
+    let imageUrl: string | null = null;
 
-      const { error } = await createClient()
-        .from('nfl_players')
-        .insert({
-          first_name: firstName,
-          last_name: lastName,
-          nfl_team_id: nflTeamId,
-          fantasy_position_id: fantasyPositionId,
-          image_url: imageUrl,
-        })
-        .select();
+    if (imageFile) {
+      imageUrl = await uploadImage(imageFile, BUCKETS.NFL_PLAYER_IMAGES);
 
-      if (error) {
-        throw error;
+      if (!imageUrl) {
+        setUploading(false);
+        notifications.show({
+          title: 'Error',
+          message: 'Failed to upload image',
+          color: 'red',
+        });
+        return;
       }
+    }
+
+    try {
+      const { firstName, lastName, nflTeamId, fantasyPositionId } = values;
+
+      await NFLPlayers.create({
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        nfl_team_id: nflTeamId,
+        fantasy_position_id: fantasyPositionId,
+        image_url: imageUrl,
+      });
 
       notifications.show({
         title: 'Success',
@@ -66,14 +97,20 @@ export default function PlayerNew({
       });
 
       form.reset();
+      setImageFile(null);
+      setImagePreview(null);
+      setUploading(false);
       router.push('/admin/nfl-players');
-    } catch (err) {
-      console.error('Error adding NFL team:', err);
-      const error = err instanceof Error ? err : new Error('Unknown error');
+    } catch (error) {
+      console.error('Error adding NFL player:', error);
+      setUploading(false);
+
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to add NFL player';
 
       notifications.show({
         title: 'Error',
-        message: `Failed to add NFL team: ${error.message}`,
+        message: errorMessage,
         color: 'red',
       });
     }
@@ -128,16 +165,18 @@ export default function PlayerNew({
 
       <FileInput
         label="Upload Player Image"
+        description={`Accepted file types: ${IMAGE_FILES_ACCEPTED}`}
         accept={IMAGE_FILES_ACCEPTED}
-        description="Upload a PNG, JPEG, JPG, or WebP image for the player"
-        key={form.key('imageUrl')}
-        // value={imageFile}
-        // onChange={handleImageChange}
-        {...form.getInputProps('imageUrl')}
+        value={imageFile}
+        onChange={handleImageChange}
       />
 
       <Group justify="flex-end" mt="md">
-        <Button type="submit" disabled={!form.isTouched()}>
+        <Button
+          type="submit"
+          disabled={uploading || !form.isTouched()}
+          loading={uploading}
+        >
           Submit
         </Button>
       </Group>
