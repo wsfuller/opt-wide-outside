@@ -27,6 +27,8 @@ export default function OwnerNew() {
     },
 
     validate: {
+      firstName: (value) =>
+        value.length > 0 ? null : 'First name is required',
       // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
     },
   });
@@ -52,7 +54,7 @@ export default function OwnerNew() {
 
     if (imageFile) {
       imageUrl = await uploadImage(imageFile, BUCKETS.OWNER_TEAM_IMAGES);
-      console.log(imageUrl);
+
       if (!imageUrl) {
         setUploading(false);
         notifications.show({
@@ -65,6 +67,7 @@ export default function OwnerNew() {
     }
     try {
       const { firstName, lastName, teamName } = values;
+
       await Owners.create({
         first_name: firstName,
         last_name: lastName,
