@@ -24,7 +24,6 @@ export default function useSession() {
 
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
         setError(null);
 
         if (session?.user) {
