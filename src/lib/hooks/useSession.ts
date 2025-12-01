@@ -17,22 +17,37 @@ export default function useSession() {
     const getUser = async () => {
       try {
         const {
-          data: { user },
-          error: userError,
-        } = await supabase.auth.getUser();
+          data: { session },
+        } = await supabase.auth.getSession();
 
         if (!mounted) return;
 
-        if (userError) {
-          setError(userError as Error);
+        setSession(session);
+        setUser(session?.user ?? null);
+        setError(null);
+
+        if (session?.user) {
+          // Session exists, verify with getUser
+          const {
+            data: { user },
+            error: userError,
+          } = await supabase.auth.getUser();
+
+          if (!mounted) return;
+
+          if (userError) {
+            setError(userError as Error);
+            setSession(null);
+            setUser(null);
+          } else {
+            setSession(session);
+            setUser(user);
+            setError(null);
+          }
+        } else {
+          // No session
           setSession(null);
           setUser(null);
-        } else {
-          const {
-            data: { session },
-          } = await supabase.auth.getSession();
-          setSession(session);
-          setUser(user);
           setError(null);
         }
       } catch (err) {
@@ -52,23 +67,12 @@ export default function useSession() {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!mounted) return;
 
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-
-      if (userError || !user) {
-        setSession(null);
-        setUser(null);
-        setError(userError as Error);
-      } else {
-        setSession(session);
-        setUser(user);
-        setError(null);
-      }
+      setSession(session);
+      setUser(session?.user ?? null);
+      setError(null);
     });
 
     return () => {

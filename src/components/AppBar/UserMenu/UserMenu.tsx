@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+'use client';
 import { useRouter } from 'next/navigation';
+
+import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/utils/supabase-client';
 import { HiArrowRightOnRectangle, HiOutlineUser } from 'react-icons/hi2';
 
-import { Avatar, Box, Group, Menu, Text, UnstyledButton } from '@mantine/core';
+import { Avatar, Menu, UnstyledButton } from '@mantine/core';
 
 type UserMenuProps = {
   initialName?: string; // optional fallback from server
